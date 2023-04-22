@@ -1,6 +1,7 @@
 from collections import defaultdict
 import numpy as np
 from decision_tree import DecisionTree
+import random as rand
 
 class RandomForest:
     def __init__(self, params):
@@ -30,5 +31,14 @@ class RandomForest:
     def bagging(self, X, y):
         X_selected, y_selected = None, None
         # TODO implement bagging
+        x_rand = []
+        y_rand = []
+        for i in range(X.shape[1]):
+            i_rand = rand.randint(0, X.shape[1] - 1)
+            x_rand.append(X[i_rand])
+            y_rand.append(y[i_rand])
+            
+        X_selected = np.array(x_rand)
+        y_selected = np.array(y_rand)
 
         return X_selected, y_selected

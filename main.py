@@ -1,7 +1,7 @@
 import numpy as np
 
 from decision_tree import DecisionTree
-from random_forest_solution import RandomForest
+from random_forest import RandomForest
 from load_data import generate_data, load_titanic
 
 def main():
@@ -21,3 +21,5 @@ def main():
 
 if __name__=="__main__":
     main()
+    
+    #wynik powinien: ~80

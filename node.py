@@ -1,6 +1,7 @@
 import copy
 
 import numpy as np
+import random as rand
 
 
 class Node:
@@ -16,7 +17,29 @@ class Node:
         best_idx = 0
 
         # TODO find position of best data split
-
+        for split in possible_splits:
+            
+            left_positive = left_negative = right_positive = right_negative = 0
+            
+            left_positive = sum(y[:split])
+            left_negative = sum(~y[:split])
+            right_positive = sum(y[split:])
+            right_negative = sum(y[split:])
+            
+            left = left_positive + left_negative
+            right = right_negative + right_negative
+            
+            if left == 0 or right == 0:
+                continue
+            
+            gini_left = 1 - (left_positive / (left_positive + left_negative))**2 - (left_negative/(left_positive + left_negative))**2
+            gini_right = 1 - (right_positive / (right_positive + right_negative))**2 - (right_negative/(right_positive + right_negative))**2 
+            gini_gain = 1 - left/(left + right) * gini_left - right/(left + right) * gini_right
+        
+            if gini_gain > best_gain:
+                best_gain = gini_gain
+                best_idx = split
+        #
         return best_idx, best_gain
 
     def split_data(self, X, y, idx, val):
@@ -35,8 +58,10 @@ class Node:
         best_split = None
 
         # TODO implement feature selection
+        features = rand.sample(range(X.shape[1] - 1), 2 if feature_subset is None else feature_subset)
+        #
 
-        for d in range(X.shape[1]):
+        for d in features:
             order = np.argsort(X[:, d])
             y_sorted = y[order]
             possible_splits = self.find_possible_splits(X[order, d])
