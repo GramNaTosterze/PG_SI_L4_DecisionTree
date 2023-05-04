@@ -18,23 +18,25 @@ class Node:
 
         # TODO find position of best data split
         for split in possible_splits:
+            y_left = y[:split]
+            y_right = y[split:]
             
-            left_positive = left_negative = right_positive = right_negative = 0
+            left_1 = (y_left == 1).sum()
+            left_0 = (y_left == 0).sum()
             
-            left_positive = sum(y[:split])
-            left_negative = sum(~y[:split])
-            right_positive = sum(y[split:])
-            right_negative = sum(y[split:])
+            right_1 = (y_right == 1).sum()
+            right_0 = (y_right == 0).sum()
             
-            left = left_positive + left_negative
-            right = right_negative + right_negative
+            left = left_1 + left_0
+            right = right_1 + right_0
+            a = left + right
             
             if left == 0 or right == 0:
                 continue
             
-            gini_left = 1 - (left_positive / (left_positive + left_negative))**2 - (left_negative/(left_positive + left_negative))**2
-            gini_right = 1 - (right_positive / (right_positive + right_negative))**2 - (right_negative/(right_positive + right_negative))**2 
-            gini_gain = 1 - left/(left + right) * gini_left - right/(left + right) * gini_right
+            gini_left = 1 - (left_1/left)**2 - (left_0/left)**2
+            gini_right = 1 - (right_1/right)**2 - (right_0/right)**2
+            gini_gain = 1 - (gini_left * left/a) - (gini_right * right/a)
         
             if gini_gain > best_gain:
                 best_gain = gini_gain
@@ -58,7 +60,7 @@ class Node:
         best_split = None
 
         # TODO implement feature selection
-        features = rand.sample(range(X.shape[1] - 1), 2 if feature_subset is None else feature_subset)
+        features = rand.sample(range(X.shape[1]), 2 if feature_subset is None else feature_subset)
         #
 
         for d in features:

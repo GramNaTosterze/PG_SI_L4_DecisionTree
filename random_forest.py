@@ -31,14 +31,15 @@ class RandomForest:
     def bagging(self, X, y):
         X_selected, y_selected = None, None
         # TODO implement bagging
-        x_rand = []
-        y_rand = []
-        for i in range(X.shape[1]):
-            i_rand = rand.randint(0, X.shape[1] - 1)
-            x_rand.append(X[i_rand])
-            y_rand.append(y[i_rand])
+        X_selected = []
+        y_selected = []
+        tree_size, num_of_traits = X.shape
+        for i in range(tree_size):
+            i_rand = rand.randrange(num_of_traits)
+            X_selected.append(X[i_rand])
+            y_selected.append(y[i_rand])
             
-        X_selected = np.array(x_rand)
-        y_selected = np.array(y_rand)
+        X_selected = np.array(X_selected)
+        y_selected = np.array(y_selected)
 
         return X_selected, y_selected
