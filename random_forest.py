@@ -35,7 +35,7 @@ class RandomForest:
         y_selected = []
         tree_size, num_of_traits = X.shape
         for i in range(tree_size):
-            i_rand = rand.randrange(num_of_traits)
+            i_rand = rand.randrange(tree_size)
             X_selected.append(X[i_rand])
             y_selected.append(y[i_rand])
             

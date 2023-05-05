@@ -59,8 +59,10 @@ class Node:
         best_gain = -np.inf
         best_split = None
 
+
+
         # TODO implement feature selection
-        features = rand.sample(range(X.shape[1]), 2 if feature_subset is None else feature_subset)
+        features = rand.sample(range(X.shape[1]), X.shape[1] if feature_subset is None else feature_subset)
         #
 
         for d in features:
